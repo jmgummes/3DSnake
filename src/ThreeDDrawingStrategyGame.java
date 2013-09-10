@@ -20,7 +20,7 @@ public class ThreeDDrawingStrategyGame extends ThreeDDrawingStrategy {
     // setup the frustum
     gl.glMatrixMode(GL.GL_PROJECTION);
     gl.glLoadIdentity();
-    double nearRadius = level.getSnake().getHead().threeDRadius()*2.5;
+    double nearRadius = level.getSnake().getHead().threeDRadius()*2;
     gl.glFrustum(-nearRadius, nearRadius, -nearRadius, nearRadius, level.getSnake().getHead().threeDRadius()*1.1, 1000);
     
     // go back to modelview
