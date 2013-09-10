@@ -1,0 +1,9 @@
+width 400
+height 200
+
+snakeX 100
+snakeY 75
+snakeAngle 0
+snakeSpeed 2
+snakeLength 3
+foodNumber 20

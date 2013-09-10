@@ -1,0 +1,14 @@
+width 400
+height 200
+
+snakeX 100
+snakeY 100
+snakeAngle 0
+snakeSpeed 2
+snakeLength 3
+foodNumber 20
+
+obstacle 0   0 400 10
+obstacle 0   0 10  200
+obstacle 0   190  400 10
+obstacle 390 0 10  200
