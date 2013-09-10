@@ -1,3 +1,5 @@
+import java.applet.Applet;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -111,9 +113,11 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
     animation.stop();
     animation.removeActionListener(this);
     TitleScreen titleScreen = new TitleScreen();
-    Window.getWindow().remove(this);
-    Window.getWindow().add(titleScreen);
-    Window.getWindow().setVisible(true);
+    Applet window = (Applet) this.getParent();
+    window.remove(this);
+    window.add(titleScreen, BorderLayout.CENTER);
+    window.doLayout();
+    window.setVisible(true);
     titleScreen.requestFocus(); 
     titleScreen.display();
   } 

@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class LevelLoader {
 
   // The levels directory
-  final static String LEVEL_DIR = "levels" + File.separator;
+  final static String LEVEL_DIR = ".." + File.separator + "levels" + File.separator;
   
   // The level file extension
   final static String LEVEL_EXTENSION = ".level";
