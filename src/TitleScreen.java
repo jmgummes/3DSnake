@@ -6,11 +6,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.URL;
+import java.security.CodeSource;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.swing.Timer;
 import javax.vecmath.Color3f;
@@ -74,17 +78,24 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
     this.setFocusable(true);
     this.requestFocus();
     
-    // Load up level descriptions
-    File[] levelFiles = new File(LevelLoader.LEVEL_DIR).listFiles(
-      new FilenameFilter() {
-        @Override
-        public boolean accept(File dir, String name) {
-          return name.endsWith(LevelLoader.LEVEL_EXTENSION);
-        }       
-      }
-    );
-    for(File file : levelFiles)
-      this.levelDescriptions.add(new LevelDescription(file.getName()));
+    CodeSource src = Window.class.getProtectionDomain().getCodeSource();
+    if (src != null) {
+      URL jar = src.getLocation();
+      try {
+        ZipInputStream zip = new ZipInputStream(jar.openStream());
+        ZipEntry entry = null;
+        while((entry = zip.getNextEntry()) != null) {
+          if(entry.getName().endsWith(".level"))
+          this.levelDescriptions.add(new LevelDescription(new File(entry.getName()).getName()));
+        }
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }  
+    } 
+    else {
+      System.out.println("Error: getCodeSource() failed");
+    }
     
     // Select the first level
     if(levelDescriptions.size() > 0) 
@@ -435,8 +446,8 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
 
     @Override
     void render(GLAutoDrawable drawable) {
-      GL gl = drawable.getGL();
-      gl.glDisable(GL.GL_DEPTH_TEST);
+      GL2 gl = (GL2) drawable.getGL();
+      gl.glDisable(GL2.GL_DEPTH_TEST);
       
       switch(state) {       
         case NORMAL:
@@ -453,4 +464,10 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
       }
     }
   }
+
+@Override
+public void dispose(GLAutoDrawable arg0) {
+	// TODO Auto-generated method stub
+	
+}
 }

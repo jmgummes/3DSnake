@@ -1,4 +1,4 @@
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Vector4d;
@@ -15,16 +15,16 @@ public class ThreeDDrawingStrategyGame extends ThreeDDrawingStrategy {
    * in the direction that the snake is looking.
    */
   @Override
-  protected void setupCamera(GL gl, Level level) {
+  protected void setupCamera(GL2 gl, Level level) {
     
     // setup the frustum
-    gl.glMatrixMode(GL.GL_PROJECTION);
+    gl.glMatrixMode(GL2.GL_PROJECTION);
     gl.glLoadIdentity();
     double nearRadius = level.getSnake().getHead().threeDRadius()*2;
     gl.glFrustum(-nearRadius, nearRadius, -nearRadius, nearRadius, level.getSnake().getHead().threeDRadius()*1.1, 1000);
     
     // go back to modelview
-    gl.glMatrixMode(GL.GL_MODELVIEW);
+    gl.glMatrixMode(GL2.GL_MODELVIEW);
     gl.glLoadIdentity();
     
     // Setup the camera...
@@ -78,6 +78,6 @@ public class ThreeDDrawingStrategyGame extends ThreeDDrawingStrategy {
   }
 
   @Override
-  protected void transformScene(GL gl, Level level) {}
+  protected void transformScene(GL2 gl, Level level) {}
 
 }
