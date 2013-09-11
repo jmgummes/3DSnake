@@ -78,7 +78,7 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
     this.setFocusable(true);
     this.requestFocus();
     
-    CodeSource src = Window.class.getProtectionDomain().getCodeSource();
+    CodeSource src = ThreeDSnakeApplet.class.getProtectionDomain().getCodeSource();
     if (src != null) {
       URL jar = src.getLocation();
       try {
@@ -465,9 +465,8 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
     }
   }
 
-@Override
-public void dispose(GLAutoDrawable arg0) {
-	// TODO Auto-generated method stub
-	
-}
+  @Override
+  public void dispose(GLAutoDrawable arg0) {
+  	// TODO Auto-generated method stub
+  }
 }

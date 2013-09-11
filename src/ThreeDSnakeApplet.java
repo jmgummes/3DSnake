@@ -7,7 +7,7 @@ import java.awt.BorderLayout;
  * in
  * @author Jim
  */
-public final class Window extends Applet {
+public final class ThreeDSnakeApplet extends Applet {
   @Override
   public void init() {
     TitleScreen titleScreen = new TitleScreen();

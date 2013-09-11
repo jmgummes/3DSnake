@@ -22,7 +22,7 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
   private Level level;
   
   // Animates the game
-  Timer animation = new Timer(20, this);;
+  Timer animation = new Timer(20, this);
   
   // Number of frames before returning to the title screen
   // when you get a game over
