@@ -1,8 +1,9 @@
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.vecmath.Vector3d;
 
-import com.sun.opengl.util.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
+
 
 /**
  * This class represents the algorithm for drawing
@@ -18,14 +19,14 @@ public abstract class ThreeDDrawingStrategy {
    * @param gl
    * @param level
    */
-  protected abstract void setupCamera(GL gl, Level level);
+  protected abstract void setupCamera(GL2 gl, Level level);
   
   /**
    * Transforms the whole level
    * @param gl
    * @param level
    */
-  protected abstract void transformScene(GL gl, Level level);
+  protected abstract void transformScene(GL2 gl, Level level);
 
   
   /**
@@ -34,10 +35,10 @@ public abstract class ThreeDDrawingStrategy {
    * @param level
    */
   public final void render(GLAutoDrawable drawable, Level level) {
-    GL gl = drawable.getGL();
+    GL2 gl = (GL2) drawable.getGL();
     GLUT glut = new GLUT();
     
-    gl.glEnable(GL.GL_DEPTH_TEST);
+    gl.glEnable(GL2.GL_DEPTH_TEST);
     
     // Setup the camera, the subclass provides the implementation
     setupCamera(gl, level);
@@ -116,7 +117,7 @@ public abstract class ThreeDDrawingStrategy {
       
       // Draw the lines that go along the y direction on the bottom layer
       for(int x = 0; x <= numXChunks; x++) {
-        gl.glBegin(GL.GL_LINE_STRIP);
+        gl.glBegin(GL2.GL_LINE_STRIP);
         for(int y = 0; y <= numYChunks; y++) {
           gl.glVertex3d(bottomLayer[x][y].x, bottomLayer[x][y].y, bottomLayer[x][y].z);
         }
@@ -125,7 +126,7 @@ public abstract class ThreeDDrawingStrategy {
       
       // Draw the lines that go along the x direction on the bottom layer
       for(int y = 0; y <= numYChunks; y++) {
-        gl.glBegin(GL.GL_LINE_STRIP);
+        gl.glBegin(GL2.GL_LINE_STRIP);
         for(int x = 0; x <= numXChunks; x++) {
           gl.glVertex3d(bottomLayer[x][y].x, bottomLayer[x][y].y, bottomLayer[x][y].z);
         }
@@ -134,7 +135,7 @@ public abstract class ThreeDDrawingStrategy {
       
       // Draw the lines that go along the y direction on the top layer
       for(int x = 0; x <= numXChunks; x++) {
-        gl.glBegin(GL.GL_LINE_STRIP);
+        gl.glBegin(GL2.GL_LINE_STRIP);
         for(int y = 0; y <= numYChunks; y++) {
           gl.glVertex3d(topLayer[x][y].x, topLayer[x][y].y, topLayer[x][y].z);
         }
@@ -143,7 +144,7 @@ public abstract class ThreeDDrawingStrategy {
       
       // Draw the lines that go along the x direction on the top layer
       for(int y = 0; y <= numYChunks; y++) {
-        gl.glBegin(GL.GL_LINE_STRIP);
+        gl.glBegin(GL2.GL_LINE_STRIP);
         for(int x = 0; x <= numXChunks; x++) {
           gl.glVertex3d(topLayer[x][y].x, topLayer[x][y].y, topLayer[x][y].z);
         }
@@ -151,7 +152,7 @@ public abstract class ThreeDDrawingStrategy {
       }
       
       // Draw the lines that go from the bottom layer to the top layer
-      gl.glBegin(GL.GL_LINES);
+      gl.glBegin(GL2.GL_LINES);
       for(int x = 0; x <= numXChunks; x++) {
         for(int y = 0; y <= numYChunks; y++) {
           gl.glVertex3d(bottomLayer[x][y].x, bottomLayer[x][y].y, bottomLayer[x][y].z);

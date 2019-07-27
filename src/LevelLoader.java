@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,7 +12,7 @@ import java.util.Scanner;
 public class LevelLoader {
 
   // The levels directory
-  final static String LEVEL_DIR = "levels" + File.separator;
+  final static String LEVEL_DIR = "levels/";
   
   // The level file extension
   final static String LEVEL_EXTENSION = ".level";
@@ -23,20 +24,16 @@ public class LevelLoader {
    * @throws FileNotFoundException
    * @throws BadFileException
    */
-  public static Level load(String levelName) throws FileNotFoundException, BadFileException {
-	
-    // The file we're loading up
-	  File levelFile = new File(LEVEL_DIR + levelName + LEVEL_EXTENSION);
-	  
-	  // How far to look ahead in the file while parsing through it
+  public static Level load(String levelName) throws FileNotFoundException, BadFileException {	  
+    // How far to look ahead in the file while parsing through it
   	final int HORIZON = 999999999;
   	
   	// We'll stuff errors in here if we find problems
-	  BadFileException errors = new BadFileException();
+    BadFileException errors = new BadFileException();
 	
-	  // Setup level height
-	  double height = 0;
-    Scanner scanner = new Scanner(levelFile);
+    // Setup level height
+    double height = 0;
+    Scanner scanner = getLevelScanner(levelName);
     if(scanner.findWithinHorizon("height", HORIZON) == null)
       errors.addError("Level height is missing.");
     else {
@@ -51,7 +48,7 @@ public class LevelLoader {
     
     // Setup level width
     double width = 0;
-    scanner = new Scanner(levelFile);
+    scanner = getLevelScanner(levelName);
     if(scanner.findWithinHorizon("width", HORIZON) == null)
       errors.addError("Level width is missing.");
     else {
@@ -66,7 +63,7 @@ public class LevelLoader {
     
     // Setup snake's x coordinates
     double snakeX = 0;
-    scanner = new Scanner(levelFile);
+    scanner = getLevelScanner(levelName);
     if(scanner.findWithinHorizon("snakeX", HORIZON) == null)
       errors.addError("snakeX is missing.");
     else {
@@ -81,7 +78,7 @@ public class LevelLoader {
     
     // Setup snake's y coordinate
     double snakeY = 0;
-    scanner = new Scanner(levelFile);
+    scanner = getLevelScanner(levelName);
     if(scanner.findWithinHorizon("snakeY", HORIZON) == null)
       errors.addError("snakeY is missing.");
     else {
@@ -96,7 +93,7 @@ public class LevelLoader {
     
     // Setup snake's length
     int snakeLength = 0;
-    scanner = new Scanner(levelFile);
+    scanner = getLevelScanner(levelName);
     if(scanner.findWithinHorizon("snakeLength", HORIZON) == null)
       errors.addError("snakeLength is missing.");
     else {
@@ -111,7 +108,7 @@ public class LevelLoader {
     
     // Setup snake's angle
     double snakeAngle = 0;
-    scanner = new Scanner(levelFile);
+    scanner = getLevelScanner(levelName);
     if(scanner.findWithinHorizon("snakeAngle", HORIZON) == null)
       errors.addError("snakeAngle is missing");
     else {
@@ -126,7 +123,7 @@ public class LevelLoader {
     
     // Setup snake's speed
     double snakeSpeed = 0;
-    scanner = new Scanner(levelFile);
+    scanner = getLevelScanner(levelName);
     if(scanner.findWithinHorizon("snakeSpeed", HORIZON) == null)
       errors.addError("snakeSpeed is missing");
     else {
@@ -141,7 +138,7 @@ public class LevelLoader {
     
     // Setup foodNumber
     int foodNumber = 0;
-    scanner = new Scanner(levelFile);
+    scanner = getLevelScanner(levelName);
     if(scanner.findWithinHorizon("foodNumber", HORIZON) == null)
       errors.addError("foodNumber is missing");
     else {
@@ -156,7 +153,7 @@ public class LevelLoader {
     
     // Setup obstacles
     List<Obstacle> obstacles = new LinkedList<Obstacle>();
-    scanner = new Scanner(levelFile);
+    scanner = getLevelScanner(levelName);
     while(scanner.findWithinHorizon("obstacle", HORIZON) != null) {
       try {
         obstacles.add(new Obstacle(
@@ -204,5 +201,11 @@ public class LevelLoader {
     public List<String> getErrors() {
       return errors;	
     }
+  }
+  
+  private static Scanner getLevelScanner(String levelName) {
+    return new Scanner(
+      LevelLoader.class.getResourceAsStream(LEVEL_DIR + levelName + LEVEL_EXTENSION)
+    );   
   }
 }

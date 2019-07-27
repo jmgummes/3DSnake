@@ -1,3 +1,5 @@
+import java.applet.Applet;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -5,7 +7,7 @@ import java.awt.event.KeyListener;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.swing.Timer;
 import javax.vecmath.Color3f;
@@ -20,7 +22,7 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
   private Level level;
   
   // Animates the game
-  Timer animation = new Timer(20, this);;
+  Timer animation = new Timer(20, this);
   
   // Number of frames before returning to the title screen
   // when you get a game over
@@ -111,9 +113,11 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
     animation.stop();
     animation.removeActionListener(this);
     TitleScreen titleScreen = new TitleScreen();
-    Window.getWindow().remove(this);
-    Window.getWindow().add(titleScreen);
-    Window.getWindow().setVisible(true);
+    Applet window = (Applet) this.getParent();
+    window.remove(this);
+    window.add(titleScreen, BorderLayout.CENTER);
+    window.doLayout();
+    window.setVisible(true);
     titleScreen.requestFocus(); 
     titleScreen.display();
   } 
@@ -156,21 +160,21 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
 
     @Override
     void render(GLAutoDrawable drawable) {
-      GL gl = drawable.getGL();
+      GL2 gl = (GL2) drawable.getGL();
       
-      gl.glDisable(GL.GL_DEPTH_TEST);
+      gl.glDisable(GL2.GL_DEPTH_TEST);
       
-      gl.glMatrixMode (GL.GL_PROJECTION);
+      gl.glMatrixMode (GL2.GL_PROJECTION);
       gl.glLoadIdentity();
       gl.glOrtho(0, level.getWidth(), level.getHeight(), 0, 0, 1);
       
-      gl.glMatrixMode (GL.GL_MODELVIEW); 
+      gl.glMatrixMode (GL2.GL_MODELVIEW); 
       gl.glLoadIdentity();
     
       
       // Draw a grid of green lines to represent the plane
       gl.glColor3d(0, 1, 0);
-      gl.glBegin(GL.GL_LINES);
+      gl.glBegin(GL2.GL_LINES);
         for(int i = 0; i < level.getWidth(); i += Level.LINE_SPACING) {
           gl.glVertex2d(i, 0);
           gl.glVertex2d(i, level.getHeight());
@@ -196,7 +200,7 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
       gl.glColor3d(.3, .3, 1);
       for(Obstacle o : level.getObstacles()) {
         for(Obstacle _o : o.split()) {
-          gl.glBegin(GL.GL_QUADS);
+          gl.glBegin(GL2.GL_QUADS);
             gl.glVertex2d(_o.getLeftSideX(), _o.getTopSideY()); 
             gl.glVertex2d(_o.getLeftSideX(), _o.getBottomSideY()); 
             gl.glVertex2d(_o.getRightSideX(), _o.getBottomSideY()); 
@@ -211,8 +215,8 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
      * @param gl
      * @param c
      */
-    private void drawCircle(GL gl, Circle c) {
-      gl.glBegin(GL.GL_TRIANGLE_FAN);
+    private void drawCircle(GL2 gl, Circle c) {
+      gl.glBegin(GL2.GL_TRIANGLE_FAN);
       gl.glVertex2d(c.getCoordinates().getX(), c.getCoordinates().getY());
       for(int angle = 0; angle <= 360; angle += 5) 
         gl.glVertex2d(c.getCoordinates().getX() + Math.sin((angle / 360.0) * 2 * Math.PI) * c.getRadius(), 
@@ -380,4 +384,10 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
       getTextRenderingStrategy().render(drawable);
     }    
   }
+
+@Override
+public void dispose(GLAutoDrawable arg0) {
+	// TODO Auto-generated method stub
+	
+}
 }
