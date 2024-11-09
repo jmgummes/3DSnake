@@ -4,9 +4,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
-import javax.media.opengl.glu.GLU;
-
-import com.sun.opengl.util.GLUT;
 
 /**
  * This class represents a top-level display that
@@ -16,9 +13,6 @@ import com.sun.opengl.util.GLUT;
  * @author Jim
  */
 public abstract class Display extends GLCanvas implements GLEventListener { 
-  // The dimensions of this display
-  private int width = getWidth();
-  private int height = getHeight();
   
   /**
    * Constructor, pretty basic
@@ -33,8 +27,6 @@ public abstract class Display extends GLCanvas implements GLEventListener {
    */
   @Override
   public final void display(GLAutoDrawable drawable) {
-	GLUT glut = new GLUT();
-	
     GL gl = drawable.getGL();
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
     gl.glClearColor(0f, 0f, 0f, 0f);
@@ -54,8 +46,6 @@ public abstract class Display extends GLCanvas implements GLEventListener {
 
   @Override
   public void reshape(GLAutoDrawable drawable, int x, int y, int w, int h) {
-    width = w;
-    height = h;
     display(drawable);
   }
   
@@ -125,28 +115,28 @@ public abstract class Display extends GLCanvas implements GLEventListener {
      */
     private final void viewPort(GLAutoDrawable drawable) {
       int viewPortX = (int)(getX() * getWidth() + getPadding());
-      int viewPortY = (int)( height - getY() * height - getH() * height + getPadding() );
+      int viewPortY = (int)( getHeight() - getY() * getHeight() - getH() * getHeight() + getPadding() );
       int viewPortWidth = (int)(getW() * getWidth() - 2 * getPadding());
-      int viewPortHeight = (int)(getH() * height - 2 * getPadding());
+      int viewPortHeight = (int)(getH() * getHeight() - 2 * getPadding());
       
       double enclosingAspectRatio =   
-        (getW() * width - 2 * getPadding()) / ((double)(getH() * height - 2 * getPadding()));
+        (getW() * getWidth() - 2 * getPadding()) / ((double)(getH() * getHeight() - 2 * getPadding()));
       
       if(getAspectRatio() < enclosingAspectRatio) {
         // Too tall / narrow
         double WidthScaleDown = 
           enclosingAspectRatio / (double) getAspectRatio();
         viewPortWidth = (int)(viewPortWidth / WidthScaleDown);
-        int extraSpace = (int)(getW() * width - viewPortWidth);
-        viewPortX = (int)(getX() * width + extraSpace / 2);
+        int extraSpace = (int)(getW() * getWidth() - viewPortWidth);
+        viewPortX = (int)(getX() * getWidth() + extraSpace / 2);
       }
       else if(getAspectRatio() > enclosingAspectRatio) {
         // Too wide / short
         double heightScaleDown =
           getAspectRatio() / (double) enclosingAspectRatio;
         viewPortHeight = (int)(viewPortHeight / heightScaleDown);
-        int extraSpace = (int)(getH() * height - viewPortHeight);
-        viewPortY = (int)(height - getY() * height - getH() * height + extraSpace / 2);
+        int extraSpace = (int)(getH() * getHeight() - viewPortHeight);
+        viewPortY = (int)(getHeight() - getY() * getHeight() - getH() * getHeight() + extraSpace / 2);
       }
       
       drawable.getGL().glViewport(viewPortX, viewPortY, viewPortWidth, viewPortHeight);
