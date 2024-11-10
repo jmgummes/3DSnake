@@ -272,13 +272,13 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
     // Text rendering strategy for the "you lose" message
     private TextRenderingStrategy lostStrategy = 
       new TextRenderingStrategy(new TextRenderingStrategy.Line(
-        "Sorry, you lose.", 1, new Color3f(1, 0, 0)
+        "Sorry, you lose.", .78, new Color3f(1, 0, 0)
       ));
     
     // Text rendering strategy for the "you win" message
     private TextRenderingStrategy wonStrategy = 
       new TextRenderingStrategy(new TextRenderingStrategy.Line(
-        "Congratulations, you win!", 1, new Color3f(0, 1, 0) 
+        "Congratulations, you win!", .78, new Color3f(0, 1, 0) 
       ));
     
     @Override

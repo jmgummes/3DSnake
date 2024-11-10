@@ -262,7 +262,7 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
     // Delegate to this strategy to render
     private TextRenderingStrategy textRenderingStrategy =
       new TextRenderingStrategy(new TextRenderingStrategy.Line(
-        "By Jim Gummeson", 1, new Color3f(1, 1, 1)    
+        "By Jimmy Fox", .78, new Color3f(1, 1, 1)    
       ));
     
     @Override
