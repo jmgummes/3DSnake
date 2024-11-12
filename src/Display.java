@@ -1,9 +1,9 @@
 import java.util.List;
 
-import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLCanvas;
-import javax.media.opengl.GLEventListener;
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.awt.GLCanvas;
+import com.jogamp.opengl.GLEventListener;
 
 /**
  * This class represents a top-level display that
@@ -50,10 +50,7 @@ public abstract class Display extends GLCanvas implements GLEventListener {
   }
   
   @Override
-  public void displayChanged(GLAutoDrawable arg0, boolean arg1, boolean arg2) {}
-
-  @Override
-  public void init(GLAutoDrawable arg0) {}
+  public void init(GLAutoDrawable drawable) {}
   
 
   /**

@@ -1,11 +1,14 @@
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
+import com.jogamp.opengl.GLAutoDrawable;
+
 import javax.vecmath.Color3f;
 
-import com.sun.opengl.util.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
 
 /**
  * This class represents a strategy for rendering 
@@ -68,15 +71,15 @@ public class TextRenderingStrategy {
    * @param drawable
    */
   public void render(GLAutoDrawable drawable) {
-    GL gl = drawable.getGL();
+    GL2 gl = drawable.getGL().getGL2();
 
     gl.glDisable(GL.GL_DEPTH_TEST);
     
-    gl.glMatrixMode (GL.GL_PROJECTION);
+    gl.glMatrixMode (GLMatrixFunc.GL_PROJECTION);
     gl.glLoadIdentity();
     gl.glOrtho(0, orthoWidth(), orthoHeight(), 0, 0, 1);
     
-    gl.glMatrixMode (GL.GL_MODELVIEW);
+    gl.glMatrixMode (GLMatrixFunc.GL_MODELVIEW);
     gl.glLoadIdentity();
     
     for(Line l : lines) {

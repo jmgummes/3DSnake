@@ -8,8 +8,8 @@ import java.io.FilenameFilter;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GLAutoDrawable;
 import javax.swing.Timer;
 import javax.vecmath.Color3f;
 
@@ -19,6 +19,9 @@ import javax.vecmath.Color3f;
  */
 public class TitleScreen extends Display implements KeyListener, ActionListener {
 
+  // The window that this TitleScreen is inside
+  Window window;
+	
   // List of level descriptions found in levels directory
   private List<LevelDescription> levelDescriptions = new LinkedList<LevelDescription>(); 
   
@@ -64,8 +67,11 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
   /**
    * Constructor
    */
-  public TitleScreen() {
+  public TitleScreen(Window window) {
     super();
+    
+    this.window = window;
+    window.add(this);
     
     // Request focus
     addKeyListener(this);
@@ -142,10 +148,10 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
         if(state == State.NORMAL) {  
           animation.stop();
           animation.removeActionListener(this);
-          Window.getWindow().remove(this);
-          GameDisplay gameDisplay = new GameDisplay(selectedLevel);
-          Window.getWindow().add(gameDisplay);
-          Window.getWindow().setVisible(true);
+          this.window.remove(this);
+          GameDisplay gameDisplay = new GameDisplay(window, selectedLevel);
+          this.window.add(gameDisplay);
+          this.window.setVisible(true);
           gameDisplay.requestFocus();
         }
         break;
@@ -163,6 +169,9 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
     previewAngle += .5;
     display();
   }
+  
+  @Override
+  public void dispose(GLAutoDrawable drawable) {}
   
   /**
    * This class is a basic description of a level file 
@@ -262,7 +271,7 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
     // Delegate to this strategy to render
     private TextRenderingStrategy textRenderingStrategy =
       new TextRenderingStrategy(new TextRenderingStrategy.Line(
-        "By Jimmy Fox", .78, new Color3f(1, 1, 1)    
+        "By Jimmy Fox", .85, new Color3f(1, 1, 1)    
       ));
     
     @Override

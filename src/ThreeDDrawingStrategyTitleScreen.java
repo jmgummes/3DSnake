@@ -1,4 +1,5 @@
-import javax.media.opengl.GL;
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 
 /**
  * This class represents the algorithm for dawing the level
@@ -19,20 +20,20 @@ public class ThreeDDrawingStrategyTitleScreen extends ThreeDDrawingStrategy {
   }
   
   @Override
-  protected void setupCamera(GL gl, Level level) {
-    gl.glMatrixMode(GL.GL_PROJECTION);
+  protected void setupCamera(GL2 gl, Level level) {
+    gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
     gl.glLoadIdentity();
 
     gl.glOrtho(-level.outerRadius() - level.innerRadius() - 30, level.outerRadius() + level.innerRadius() + 30, 
                -level.outerRadius() - level.innerRadius() - 30, level.outerRadius() + level.innerRadius() + 30, 
                -100000, 100000);
     
-    gl.glMatrixMode(GL.GL_MODELVIEW);
+    gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
     gl.glLoadIdentity();
   }
 
   @Override
-  protected void transformScene(GL gl, Level level) {
+  protected void transformScene(GL2 gl, Level level) {
     gl.glRotated(angle, 1, 1, 0);
   }
 

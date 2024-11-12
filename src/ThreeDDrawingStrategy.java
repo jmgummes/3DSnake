@@ -1,8 +1,9 @@
-import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GLAutoDrawable;
 import javax.vecmath.Vector3d;
 
-import com.sun.opengl.util.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
 
 /**
  * This class represents the algorithm for drawing
@@ -18,14 +19,14 @@ public abstract class ThreeDDrawingStrategy {
    * @param gl
    * @param level
    */
-  protected abstract void setupCamera(GL gl, Level level);
+  protected abstract void setupCamera(GL2 gl, Level level);
   
   /**
    * Transforms the whole level
    * @param gl
    * @param level
    */
-  protected abstract void transformScene(GL gl, Level level);
+  protected abstract void transformScene(GL2 gl, Level level);
 
   
   /**
@@ -34,7 +35,7 @@ public abstract class ThreeDDrawingStrategy {
    * @param level
    */
   public final void render(GLAutoDrawable drawable, Level level) {
-    GL gl = drawable.getGL();
+    GL2 gl = drawable.getGL().getGL2();
     GLUT glut = new GLUT();
     
     gl.glEnable(GL.GL_DEPTH_TEST);

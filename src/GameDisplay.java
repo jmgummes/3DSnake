@@ -5,8 +5,11 @@ import java.awt.event.KeyListener;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
+import com.jogamp.opengl.GLAutoDrawable;
+
 import javax.swing.Timer;
 import javax.vecmath.Color3f;
 
@@ -16,6 +19,9 @@ import javax.vecmath.Color3f;
  */
 public class GameDisplay extends Display implements KeyListener, ActionListener {
   
+  // The window that this GameDisplay is inside
+  private Window window;
+	
   // The level being played
   private Level level;
   
@@ -40,8 +46,9 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
    * Constructor, pretty basic
    * @param level
    */
-  public GameDisplay(Level level) {
+  public GameDisplay(Window window, Level level) {
     super();
+    this.window = window;
     this.level = level;
     addKeyListener(this);
     animation.start();
@@ -110,13 +117,15 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
   private void returnToTitleScreen() {
     animation.stop();
     animation.removeActionListener(this);
-    TitleScreen titleScreen = new TitleScreen();
-    Window.getWindow().remove(this);
-    Window.getWindow().add(titleScreen);
-    Window.getWindow().setVisible(true);
+    this.window.remove(this);
+    TitleScreen titleScreen = new TitleScreen(window);
+    this.window.setVisible(true);
     titleScreen.requestFocus(); 
     titleScreen.display();
-  } 
+  }
+  
+  @Override
+  public void dispose(GLAutoDrawable drawable) {}
   
   /**
    * SubDisplay for the 2-Dimensional version of the game
@@ -156,15 +165,15 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
 
     @Override
     void render(GLAutoDrawable drawable) {
-      GL gl = drawable.getGL();
+      GL2 gl = drawable.getGL().getGL2();
       
       gl.glDisable(GL.GL_DEPTH_TEST);
       
-      gl.glMatrixMode (GL.GL_PROJECTION);
+      gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
       gl.glLoadIdentity();
       gl.glOrtho(0, level.getWidth(), level.getHeight(), 0, 0, 1);
       
-      gl.glMatrixMode (GL.GL_MODELVIEW); 
+      gl.glMatrixMode (GLMatrixFunc.GL_MODELVIEW); 
       gl.glLoadIdentity();
     
       
@@ -196,7 +205,7 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
       gl.glColor3d(.3, .3, 1);
       for(Obstacle o : level.getObstacles()) {
         for(Obstacle _o : o.split()) {
-          gl.glBegin(GL.GL_QUADS);
+          gl.glBegin(GL2.GL_QUADS);
             gl.glVertex2d(_o.getLeftSideX(), _o.getTopSideY()); 
             gl.glVertex2d(_o.getLeftSideX(), _o.getBottomSideY()); 
             gl.glVertex2d(_o.getRightSideX(), _o.getBottomSideY()); 
@@ -211,7 +220,7 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
      * @param gl
      * @param c
      */
-    private void drawCircle(GL gl, Circle c) {
+    private void drawCircle(GL2 gl, Circle c) {
       gl.glBegin(GL.GL_TRIANGLE_FAN);
       gl.glVertex2d(c.getCoordinates().getX(), c.getCoordinates().getY());
       for(int angle = 0; angle <= 360; angle += 5) 
