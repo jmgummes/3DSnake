@@ -13,6 +13,7 @@ import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import back.Circle;
 import back.Level;
 import back.LevelSchema;
+import back.LevelSchemaLoader;
 import back.Snake;
 
 import com.jogamp.opengl.GLAutoDrawable;
@@ -32,6 +33,9 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
   // The window that this GameDisplay is inside
   private Window window;
 	
+  // The available level schemas that were loaded at the beginning of the program
+  private List<LevelSchema> levelSchemas;
+  
   // The level being played
   private Level level;
   
@@ -56,9 +60,10 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
    * Constructor, pretty basic
    * @param level
    */
-  public GameDisplay(Window window, Level level) {
+  public GameDisplay(Window window, List<LevelSchema> levelSchemas, Level level) {
     super();
     this.window = window;
+    this.levelSchemas = levelSchemas;
     this.level = level;
     addKeyListener(this);
     animation.start();
@@ -128,7 +133,7 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
     animation.stop();
     animation.removeActionListener(this);
     this.window.remove(this);
-    TitleScreen titleScreen = new TitleScreen(window);
+    TitleScreen titleScreen = new TitleScreen(window, levelSchemas);
     this.window.setVisible(true);
     titleScreen.requestFocus(); 
     titleScreen.display();
