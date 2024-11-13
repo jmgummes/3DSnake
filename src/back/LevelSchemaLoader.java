@@ -40,7 +40,7 @@ public class LevelSchemaLoader {
           LevelSchema levelSchema = levelSchemas.get(obstaclesResultSet.getInt("level_id"));
           if(levelSchema == null)
             continue;
-          levelSchema.new Obstacle(obstaclesResultSet.getDouble("x"), obstaclesResultSet.getDouble("y"),
+          levelSchema.addObstacle(obstaclesResultSet.getDouble("x"), obstaclesResultSet.getDouble("y"),
         		  obstaclesResultSet.getDouble("width"), obstaclesResultSet.getDouble("height"));
 		}
 		

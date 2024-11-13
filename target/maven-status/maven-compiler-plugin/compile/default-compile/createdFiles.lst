@@ -15,7 +15,6 @@ front\GameDisplay$FoodLeftDisplay.class
 back\Snake$Head.class
 back\Level$State.class
 back\Level.class
-front\Main.class
 back\LevelSchema.class
 front\GameDisplay$ThreeDView.class
 front\TextRenderingStrategy$Line.class

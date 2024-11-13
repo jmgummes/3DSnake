@@ -27,8 +27,7 @@ public class LevelSchema {
 		this.snakeStartingSpeed = snakeStartingSpeed;
 		this.snakeStartingLength = snakeStartingLength;
 		this.startingFoodNumber = startingFoodNumber;
-		this.obstacles = new LinkedList<Obstacle>();
-		
+		this.obstacles = new LinkedList<Obstacle>();	
 	}
 	
 	/**
@@ -120,6 +119,17 @@ public class LevelSchema {
 	public List<Obstacle> getObstacles() {
 		return obstacles;
 	}
+	
+	/**
+	 * Adds an obstacle
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 */
+	public void addObstacle(double x, double y, double width, double height) {
+	  this.obstacles.add(this.new Obstacle(x, y, width, height));
+	}
 
 	/**
 	 * @return the innerRadius of the torus that this level schema maps onto
@@ -142,7 +152,6 @@ public class LevelSchema {
 		private double height;
 
 		public Obstacle(double x, double y, double width, double height) {
-			LevelSchema.this.obstacles.add(this);
 			this.x = x;
 			this.y = y;
 			this.width = width;
