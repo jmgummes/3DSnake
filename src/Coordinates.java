@@ -82,10 +82,10 @@ public class Coordinates {
    * maintaining congruence mod the level width.
    */
   private void handleXWrapAround() { 
-    while (x >= level.getWidth())
-      x -= level.getWidth();  
+    while (x >= level.getDescription().getWidth())
+      x -= level.getDescription().getWidth();  
     while (x < 0)
-      x += level.getWidth();
+      x += level.getDescription().getWidth();
   }
 
   /**
@@ -93,12 +93,12 @@ public class Coordinates {
    * maintaining congruence mod the level height.
    */
   private void handleYWrapAround() {
-    if(y >= level.getHeight())
-      while (y >= level.getHeight())
-        y -= level.getHeight();
+    if(y >= level.getDescription().getHeight())
+      while (y >= level.getDescription().getHeight())
+        y -= level.getDescription().getHeight();
     else if(y < 0)
       while (y < 0)
-        y += level.getHeight();
+        y += level.getDescription().getHeight();
   }
 
   /**
@@ -107,7 +107,7 @@ public class Coordinates {
    * @return angle around the torus
    */
   public double xToAngle(double x) {
-    return (x / level.getWidth()) * 2 * Math.PI;
+    return (x / level.getDescription().getWidth()) * 2 * Math.PI;
   }
 
   /**
@@ -116,7 +116,7 @@ public class Coordinates {
    * @return angle around the torus
    */
   public double yToAngle(double y) {
-    return (y / level.getHeight()) * 2 * Math.PI;
+    return (y / level.getDescription().getHeight()) * 2 * Math.PI;
   }
 
   /**

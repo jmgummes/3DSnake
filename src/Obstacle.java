@@ -7,6 +7,14 @@ import java.util.List;
  * @author Jim
  */
 public class Obstacle {
+	
+  abstract static class Description {
+	abstract double getX();
+	abstract double getY();
+	
+	abstract double getWidth();
+	abstract double getHeight();
+  }	
   
   // Coordinates of the top-left corner of this Obstacle
   private Coordinates coordinates;
@@ -21,10 +29,22 @@ public class Obstacle {
    * @param width
    * @param height
    */
+  public Obstacle(Level level, Description description) {
+    this. coordinates = new Coordinates(level, description.getX(), description.getY()); 
+    this.width = description.getWidth(); 
+    this.height = description.getHeight();
+  }
+  
+  /**
+   * Constructor
+   * @param coordinates
+   * @param width
+   * @param height
+   */
   public Obstacle(Coordinates coordinates, double width, double height) {
-    this. coordinates = coordinates; 
-    this.width = width; 
-    this.height = height;
+	  this.coordinates = coordinates;
+	  this.width = width;
+	  this.height = height;
   }
   
   /**
@@ -72,8 +92,8 @@ public class Obstacle {
    */
   public double getRightSideX() {
     double toReturn = getLeftSideX() + width;
-    while(toReturn > coordinates.getLevel().getWidth())
-      toReturn -= coordinates.getLevel().getWidth();
+    while(toReturn > coordinates.getLevel().getDescription().getWidth())
+      toReturn -= coordinates.getLevel().getDescription().getWidth();
     return toReturn;
   }
   
@@ -89,8 +109,8 @@ public class Obstacle {
    */
   public double getBottomSideY() {
     double toReturn = getTopSideY() + height;
-    while(toReturn > coordinates.getLevel().getHeight())
-      toReturn -= coordinates.getLevel().getHeight();
+    while(toReturn > coordinates.getLevel().getDescription().getHeight())
+      toReturn -= coordinates.getLevel().getDescription().getHeight();
     return toReturn;
   }
   
@@ -146,7 +166,7 @@ public class Obstacle {
     
     if(getRightSideX() <= getLeftSideX()) {
       Obstacle left = new Obstacle(new Coordinates(coordinates.getLevel(), getLeftSideX(), getTopSideY()),
-                                   coordinates.getLevel().getWidth() - getLeftSideX(),
+                                   coordinates.getLevel().getDescription().getWidth() - getLeftSideX(),
                                    getHeight());
       
       Obstacle right = new Obstacle(new Coordinates(coordinates.getLevel(), 0, getTopSideY()),
@@ -157,7 +177,7 @@ public class Obstacle {
     }
     else if(getBottomSideY() <= getTopSideY()) {
       Obstacle bottom = new Obstacle(new Coordinates(coordinates.getLevel(), getLeftSideX(), getTopSideY()),
-                                     getWidth(), coordinates.getLevel().getHeight() - getTopSideY());
+                                     getWidth(), coordinates.getLevel().getDescription().getHeight() - getTopSideY());
       
       Obstacle top = new Obstacle(new Coordinates(coordinates.getLevel(), getLeftSideX(), 0),
                                   getWidth(), getBottomSideY());

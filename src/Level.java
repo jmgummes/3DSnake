@@ -1,3 +1,5 @@
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -5,13 +7,44 @@ import java.util.List;
  * @author Jim
  */
 public class Level {
-  
+	
   // Spacing between lines on the surface of any level
   final static double LINE_SPACING = 6.0;
+	
+  abstract static class Description {
+	// Name
+    protected abstract String getName();
+	  
+	// The dimensions of this level
+	protected abstract double getWidth();
+	protected abstract double getHeight();
+	
+	// The starting food number
+	protected abstract int getStartingFoodNumber();
+
+	// The obstacles that live on this level
+	protected List<Obstacle.Description> getObstacleDescriptions() {
+	  return Collections.emptyList();		
+	}
+	  
+	// The snake's starting x coordinate
+	protected abstract double getSnakeStartingX();
+	
+	// The snake's starting y coordinate
+	protected abstract double getSnakeStartingY();
+	
+	// The snake's starting angle
+	protected abstract double getSnakeStartingAngle();
+	
+	// The snake's starting speed
+	protected abstract double getSnakeStartingSpeed();
+	
+	// The snake's starting length
+	protected abstract int getSnakeStartingLength();
+  }
   
-  // The dimensions of this level
-  private double width;
-  private double height;
+  // Level description
+  private Description description;
   
   // The snake that lives on this level
   private Snake snake;
@@ -21,9 +54,6 @@ public class Level {
   
   // The number of food items left
   private int foodLeft;
-  
-  // The obstacles that live on this level
-  private List<Obstacle> obstacles;
   
   /**
    * The possible states that a level can be in
@@ -54,16 +84,36 @@ public class Level {
    * @param foodNumber
    * @param obstacles
    */
-  public Level(double width, double height, Snake snake, int foodNumber, List<Obstacle> obstacles) {
-    this.width = width;
-    this.height = height;
-    this.obstacles = obstacles;
-    this.snake = snake;
-    snake.setLevel(this);
-    for(Obstacle o : obstacles)
+  public Level(Description description) {
+	this.description = description;
+    this.snake = new Snake(
+      this, description.getSnakeStartingX(), description.getSnakeStartingY(),
+      description.getSnakeStartingAngle(), description.getSnakeStartingSpeed(),
+      description.getSnakeStartingLength()
+    );
+    for(Obstacle o : this.getObstacles())
       o.setLevel(this);
-    this.foodLeft = foodNumber;
+    this.foodLeft = description.getStartingFoodNumber();
     placeFood();
+  }
+  
+  /**
+   * Get the description of this level
+   * @return description
+   */
+  public Description getDescription() {
+    return this.description;
+  }
+  
+  /**
+   * Get the obstacles
+   * @return obstacles
+   */
+  public List<Obstacle> getObstacles() {
+    List<Obstacle> obstacles = new LinkedList<Obstacle>();
+    for(Obstacle.Description od : this.description.getObstacleDescriptions())
+    	obstacles.add(new Obstacle(this, od));
+    return obstacles;
   }
   
   /**
@@ -96,7 +146,7 @@ public class Level {
         state = State.LOST;
     
     // Check for collisions with obstacle
-    for(Obstacle o : obstacles) 
+    for(Obstacle o : getObstacles()) 
       if(o.overlapsWithCircle(snake.getHead()))
         state = State.LOST;
   }
@@ -118,22 +168,6 @@ public class Level {
   }
   
   /**
-   * Getter for width
-   * @return width
-   */
-  public double getWidth() {
-    return width;
-  }
-  
-  /**
-   * Getter for height
-   * @return height
-   */
-  public double getHeight() {
-    return height;
-  }
-  
-  /**
    * Getter for snake
    * @return snake
    */
@@ -150,19 +184,11 @@ public class Level {
   }
   
   /**
-   * Getter for obstacles
-   * @return obstacles
-   */
-  public List<Obstacle> getObstacles() {
-    return obstacles;
-  }
-  
-  /**
    * Randomly places food onto the level
    */
   public void placeFood() {
     do {
-      food = new Food(new Coordinates(this, Math.random() * width, Math.random() * height));
+      food = new Food(new Coordinates(this, Math.random() * description.getWidth(), Math.random() * description.getHeight()));
     } 
     while(foodOverlapsWithObstacle());
   }
@@ -171,7 +197,7 @@ public class Level {
    * @return whether food overlaps with any obstacle
    */
   private boolean foodOverlapsWithObstacle() {
-    for(Obstacle o : obstacles)
+    for(Obstacle o : getObstacles())
       if(o.overlapsWithCircle(food))
         return true;
     return false;
@@ -181,13 +207,13 @@ public class Level {
    * @return the innerRadius of the torus that this level maps onto
    */
   public double innerRadius() {
-    return getHeight() / (Math.PI * 2);
+    return description.getHeight() / (Math.PI * 2);
   }
   
   /**
    * @return the outerRadius of the torus that this level maps onto
    */
   public double outerRadius() {
-    return getWidth() / (Math.PI * 2);
+    return description.getWidth() / (Math.PI * 2);
   }
 }

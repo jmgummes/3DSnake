@@ -135,7 +135,7 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
 
     @Override
     protected double getAspectRatio() {
-      return level.getWidth() / level.getHeight();
+      return level.getDescription().getWidth() / level.getDescription().getHeight();
     }
 
     @Override
@@ -171,7 +171,7 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
       
       gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
       gl.glLoadIdentity();
-      gl.glOrtho(0, level.getWidth(), level.getHeight(), 0, 0, 1);
+      gl.glOrtho(0, level.getDescription().getWidth(), level.getDescription().getHeight(), 0, 0, 1);
       
       gl.glMatrixMode (GLMatrixFunc.GL_MODELVIEW); 
       gl.glLoadIdentity();
@@ -180,13 +180,13 @@ public class GameDisplay extends Display implements KeyListener, ActionListener 
       // Draw a grid of green lines to represent the plane
       gl.glColor3d(0, 1, 0);
       gl.glBegin(GL.GL_LINES);
-        for(int i = 0; i < level.getWidth(); i += Level.LINE_SPACING) {
+        for(int i = 0; i < level.getDescription().getWidth(); i += Level.LINE_SPACING) {
           gl.glVertex2d(i, 0);
-          gl.glVertex2d(i, level.getHeight());
+          gl.glVertex2d(i, level.getDescription().getHeight());
         }
-        for(int i = 0; i < level.getHeight(); i += Level.LINE_SPACING) {
+        for(int i = 0; i < level.getDescription().getHeight(); i += Level.LINE_SPACING) {
           gl.glVertex2d(0, i);
-          gl.glVertex2d(level.getWidth(), i);
+          gl.glVertex2d(level.getDescription().getWidth(), i);
         }
       gl.glEnd();
          

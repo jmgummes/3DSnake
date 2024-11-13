@@ -56,8 +56,8 @@ public abstract class ThreeDDrawingStrategy {
     gl.glColor3f(0,1f,0);
     glut.glutWireTorus(
       level.innerRadius(), level.outerRadius(), 
-      (int)(level.getHeight() / Level.LINE_SPACING), 
-      (int)(level.getWidth() / Level.LINE_SPACING)
+      (int)(level.getDescription().getHeight() / Level.LINE_SPACING), 
+      (int)(level.getDescription().getWidth() / Level.LINE_SPACING)
     );
     
     // Draw the snake

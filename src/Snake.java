@@ -32,9 +32,10 @@ public class Snake implements Iterable<Snake.Segment> {
    * @param speed 
    * @param length
    */
-  public Snake(Coordinates coordinates, double angle, double speed, int length) {
+  public Snake(Level level, double x, double y, double angle, double speed, int length) {
+	this.level = level;
     this.speed = speed;
-    head = new Head(coordinates, angle);
+    head = new Head(new Coordinates(level, x, y), angle);
     tail = head;
     for(; length - 1 > 0; length--)
       new BodySegment();
@@ -64,16 +65,6 @@ public class Snake implements Iterable<Snake.Segment> {
   public void move() {
     for(Segment s : this)
       s.move();
-  }
-  
-  /**
-   * Setter for level
-   * @param level
-   */
-  public void setLevel(Level level) {
-    this.level = level;
-    for(Segment s : this)
-      s.coordinates.setLevel(level);
   }
   
   /**
