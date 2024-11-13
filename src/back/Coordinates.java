@@ -10,7 +10,7 @@ import javax.vecmath.Vector4d;
 public class Coordinates {
 
   // The level that these coordinates apply to
-  private LevelSchema level;
+  private LevelSchema levelSchema;
 
   // x, y coordinates on the plane
   private double x;
@@ -23,25 +23,17 @@ public class Coordinates {
    * @param y
    */
   public Coordinates(LevelSchema level, double x, double y) {
-    this.level = level;
+    this.levelSchema = level;
     this.x = x;
     this.y = y;
   }
 
   /**
-   * Getter for level
-   * @return level
+   * Getter for levelSchema
+   * @return levelSchema
    */
-  public LevelSchema getLevel() {
-    return level;
-  }
-
-  /**
-   * Setter for level
-   * @param level
-   */
-  public void setLevel(LevelSchema level) {
-    this.level = level;
+  public LevelSchema getLevelSchema() {
+    return levelSchema;
   }
 
   /**
@@ -83,10 +75,10 @@ public class Coordinates {
    * maintaining congruence mod the level width.
    */
   private void handleXWrapAround() { 
-    while (x >= level.getWidth())
-      x -= level.getWidth();  
+    while (x >= levelSchema.getWidth())
+      x -= levelSchema.getWidth();  
     while (x < 0)
-      x += level.getWidth();
+      x += levelSchema.getWidth();
   }
 
   /**
@@ -94,12 +86,12 @@ public class Coordinates {
    * maintaining congruence mod the level height.
    */
   private void handleYWrapAround() {
-    if(y >= level.getHeight())
-      while (y >= level.getHeight())
-        y -= level.getHeight();
+    if(y >= levelSchema.getHeight())
+      while (y >= levelSchema.getHeight())
+        y -= levelSchema.getHeight();
     else if(y < 0)
       while (y < 0)
-        y += level.getHeight();
+        y += levelSchema.getHeight();
   }
 
   /**
@@ -108,7 +100,7 @@ public class Coordinates {
    * @return angle around the torus
    */
   public double xToAngle(double x) {
-    return (x / level.getWidth()) * 2 * Math.PI;
+    return (x / levelSchema.getWidth()) * 2 * Math.PI;
   }
 
   /**
@@ -117,7 +109,7 @@ public class Coordinates {
    * @return angle around the torus
    */
   public double yToAngle(double y) {
-    return (y / level.getHeight()) * 2 * Math.PI;
+    return (y / levelSchema.getHeight()) * 2 * Math.PI;
   }
 
   /**
@@ -189,7 +181,7 @@ public class Coordinates {
 
     Matrix4d firstTranslation = new Matrix4d(
       1, 0, 0, 0, 
-      0, 1, 0, level.outerRadius(), 
+      0, 1, 0, levelSchema.outerRadius(), 
       0, 0, 1, 0, 
       0, 0, 0, 1
     );
@@ -200,7 +192,7 @@ public class Coordinates {
 
     Matrix4d secondTranslation = new Matrix4d(
       1, 0, 0, 0, 
-      0, 1, 0, level.innerRadius() + heightFromSurface, 
+      0, 1, 0, levelSchema.innerRadius() + heightFromSurface, 
       0, 0, 1, 0, 
       0, 0, 0, 1
     );

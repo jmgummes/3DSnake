@@ -38,8 +38,8 @@ public abstract class Circle {
     return
     Math.tan(getCoordinates().xToAngle(getRadius()) / 2.0) * 2 * 
     (
-        getCoordinates().getLevel().outerRadius() + 
-        Math.cos(getCoordinates().yToAngle(getCoordinates().getY())) * getCoordinates().getLevel().innerRadius()
+        getCoordinates().getLevelSchema().outerRadius() + 
+        Math.cos(getCoordinates().yToAngle(getCoordinates().getY())) * getCoordinates().getLevelSchema().innerRadius()
     );
   }
 }
