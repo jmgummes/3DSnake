@@ -19,11 +19,6 @@ public abstract class LevelSchema {
 	public List<Obstacle> getObstacles() {
 	  return Collections.emptyList();		
 	}
-	
-	// TODO: remove
-	public List<Obstacle> getObstacleDescriptions() {
-	  return this.getObstacles();
-	}
 	  
 	// The snake's starting x coordinate
 	public abstract double getSnakeStartingX();

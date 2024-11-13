@@ -85,7 +85,7 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
 		}
 		
 		@Override
-		public List<LevelSchema.Obstacle> getObstacleDescriptions() {
+		public List<LevelSchema.Obstacle> getObstacles() {
 		  return List.of(
 		    new LevelSchema.Obstacle() {
 			  @Override
@@ -267,7 +267,7 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
 		}
 		
 		@Override
-		public List<LevelSchema.Obstacle> getObstacleDescriptions() {
+		public List<LevelSchema.Obstacle> getObstacles() {
 		  return List.of(
 		    new LevelSchema.Obstacle() {
 			  @Override
@@ -403,7 +403,7 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
 		}
 		
 		@Override
-		public List<LevelSchema.Obstacle> getObstacleDescriptions() {
+		public List<LevelSchema.Obstacle> getObstacles() {
 		  return List.of(
 		    new LevelSchema.Obstacle() {
 			  @Override
@@ -476,7 +476,7 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
 		}
 		
 		@Override
-		public List<LevelSchema.Obstacle> getObstacleDescriptions() {
+		public List<LevelSchema.Obstacle> getObstacles() {
 		  return List.of(
 		    new LevelSchema.Obstacle() {
 			  @Override
@@ -696,7 +696,7 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
   		}
   		
   		@Override
-  		public List<LevelSchema.Obstacle> getObstacleDescriptions() {
+  		public List<LevelSchema.Obstacle> getObstacles() {
   		  return List.of(
   		    new LevelSchema.Obstacle() {
   			  @Override
@@ -769,7 +769,7 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
   		}
   		
   		@Override
-  		public List<LevelSchema.Obstacle> getObstacleDescriptions() {
+  		public List<LevelSchema.Obstacle> getObstacles() {
   		  return List.of(
   		    new LevelSchema.Obstacle() {
   			  @Override
@@ -1064,22 +1064,6 @@ public class TitleScreen extends Display implements KeyListener, ActionListener 
 	 * @author Jim
 	 */
 	public class SelectedLevelDisplay extends SubDisplay {
-
-		// Text rendering strategies to delegate to
-		private TextRenderingStrategy badLevelStrategy;
-		private TextRenderingStrategy missingLevelStrategy;
-
-		/**
-		 * Constructor, does some work to setup the text rendering strategies
-		 */
-		public SelectedLevelDisplay() {
-			List<TextRenderingStrategy.Line> badFileLines = new LinkedList<TextRenderingStrategy.Line>();
-			badFileLines.add(new TextRenderingStrategy.Line("Level file has errors!", 1, new Color3f(1, 0, 0)));
-			badFileLines.add(new TextRenderingStrategy.Line("(See console)", 1, new Color3f(1, 0, 0)));
-			badLevelStrategy = new TextRenderingStrategy(badFileLines);
-			missingLevelStrategy = new TextRenderingStrategy(
-					new TextRenderingStrategy.Line("File not found!", 1, new Color3f(1, 0, 0)));
-		}
 
 		@Override
 		protected double getAspectRatio() {
