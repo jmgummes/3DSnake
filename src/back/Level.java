@@ -1,7 +1,4 @@
 package back;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * This class represents a level of the game.
